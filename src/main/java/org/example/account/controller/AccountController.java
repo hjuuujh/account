@@ -27,7 +27,7 @@ public class AccountController {
         return "Account created";
     }
 
-    @GetMapping("/acount/{id}")
+    @GetMapping("/account/{id}")
     public Account getAccount(@PathVariable Long id) {
         return accountService.getAccount(id);
     }
