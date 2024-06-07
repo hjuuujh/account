@@ -1,3 +1,4 @@
+## 사전준비
 1. Lombok
 - 자바 보일러 플레이트 코드 줄여주는 라이브러리
 - @Setter @Getter : Java Bean 규약에 있는 setter, getter 자동생성
@@ -48,5 +49,32 @@
 - verify : 의존하고있는 Mock이 해당되는 동작을 수행했는지 확인하는 검증
 - ArgumentCaptor : 의존하고 있는 Mock에 전달된 데이터가 내가 의도하는 데이터가 맞는지 검증
 - assertions : 다양한 assertion 방법들
-- assertThrows : 
+- assertThrows : 예외를 던지는 로직을 테스트 하는 방법  
+  
+## 프로젝트
+1. 요구사항 분석
+- 신규 사업으로 핀테크 결정 -> 계좌 시스템 필요
+- 사업 구체화 : 계좌 정보 저장, 거래정보 받아 거래금액 만큼 늘이거나 줄이는 시스템  
+사용자 : 신규등록, 해지, 중지, 사용자 정보 조회 기능   
+계좌 : 계좌 추가, 해지, 확인 기능  
+거래 : 잔액 사용, 잔액 사용 취소, 거래 확인 기능  
+2. 기술 스택 결정
+- Spring boot, Java
+- H2 DB - Spring data jpa
+- Embedded redis
+- API Request body와 Response body는 json type
+- 각 API는 각자의 요청과 응답 객체 구조 가짐
+3. 각 기능 별 구체적인 명세서 생성
+4. 패키지 구조 (일반적으로 구성하는 구조) 
+- aop : AOP로 중복 거래 방지 락을 걸 때 사용될 어노테이션 등을 위치시킴
+- config : redis 관련 설정 및 클라이언트 빈 등록, JPA 관련 설정 등록
+- controller : API의 endpoint를 등록하고, 요청/응답의 형식을 갖는 클래스 패키지
+- domain : jpa entity
+- dto : DTO(Data Transfer Object)위치 시키는곳, controller에서 요청/응답에 사용할 클래스, 로직 내부에서 데이터 전송에 사용할 클래스
+- exception : 커스텀 Exception, Exception Handler 클래스 패키지
+- repostiroy : Repository(DB에 연결할 때 사용하는 인터페이스)가 위치하는 패키지
+- service : 비즈니스 로직을 담는 서비스 클래스 패키지
+- type : 상태타입, 에러코드, 거래종류 등의 다양한 enum class들의 패키지
+
+  
 
