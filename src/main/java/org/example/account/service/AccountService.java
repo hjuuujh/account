@@ -43,17 +43,17 @@ public class AccountService {
         // 가장 최근에 생성된 account 가져와서 그 accountNumber+1된값을 저장
         String newAccountNumber = accountRepository.findFirstByOrderByIdDesc()
                 .map(account -> (Integer.parseInt(account.getAccountNumber())) + 1 + "")
-                .orElse("100000000");
+                .orElse("1000000000");
 
-        return AccountDto.fromEntity(accountRepository.save(
-                Account.builder()
+        return AccountDto.fromEntity(
+                accountRepository.save(Account.builder()
                         .accountUser(accountUser)
                         .accountStatus(IN_USE)
                         .accountNumber(newAccountNumber)
                         .balance(initialBalance)
                         .registeredAt(LocalDateTime.now())
-                        .build()
-        ));
+                        .build())
+        );
     }
 
     private void validateCreateAccount(AccountUser accountUser) {

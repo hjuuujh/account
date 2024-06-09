@@ -6,8 +6,9 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
+    INTERNAL_SERVER_ERROR("내부 에러가 발생했습니다."),
     USER_NOT_FOUND("잘못된 요청입니다."),
-    INVAILD_REQUEST("사용자가 없습니다."),
+    INVALID_REQUEST("사용자가 없습니다."),
     ACCOUNT_NOT_FOUND("계좌가 없습니다."),
     TRANSACTION_NOT_FOUND("해당 거래가 없습니다."),
     TRANSACTION_ACCOUNT_UN_MATCH("이 거래는 해당 계좌에서 발생한 거래가 아닙니다."),
