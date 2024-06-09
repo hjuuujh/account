@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.account.domain.Account;
 import org.example.account.domain.AccountUser;
 import org.example.account.dto.AccountDto;
+import org.example.account.dto.AccountInfo;
 import org.example.account.exception.AccountException;
 import org.example.account.repository.AccountRepository;
 import org.example.account.repository.AccountUserRepository;
@@ -13,9 +14,12 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static org.example.account.type.AccountStatus.IN_USE;
+import static org.example.account.type.ErrorCode.USER_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +37,7 @@ public class AccountService {
     @Transactional
     public AccountDto createAccount(Long userId, Long initialBalance) {
         AccountUser accountUser = accountUserRepository.findById(userId)
-                .orElseThrow(() -> new AccountException(ErrorCode.USER_NOT_FOUND)); // 찾고 없으면 에러 발생시킴
+                .orElseThrow(() -> new AccountException(USER_NOT_FOUND)); // 찾고 없으면 에러 발생시킴
 
         validateCreateAccount(accountUser);
         // 가장 최근에 생성된 account 가져와서 그 accountNumber+1된값을 저장
@@ -66,7 +70,7 @@ public class AccountService {
     @Transactional
     public AccountDto deleteAccount(Long userId, String accountNumber) {
         AccountUser accountUser = accountUserRepository.findById(userId)
-                .orElseThrow(() -> new AccountException(ErrorCode.USER_NOT_FOUND)); // 찾고 없으면 에러 발생시킴
+                .orElseThrow(() -> new AccountException(USER_NOT_FOUND)); // 찾고 없으면 에러 발생시킴
 
         Account account = accountRepository.findByAccountNumber(accountNumber)
                 .orElseThrow(() -> new AccountException(ErrorCode.ACCOUNT_NOT_FOUND));
@@ -93,4 +97,13 @@ public class AccountService {
         }
     }
 
+    @Transactional
+    public List<AccountDto> getAccountByUserId(Long userId) {
+        AccountUser accountUser = accountUserRepository.findById(userId)
+                .orElseThrow(() -> new AccountException(USER_NOT_FOUND));
+
+        List<Account> accounts = accountRepository.findByAccountUser(accountUser);
+
+        return accounts.stream().map(AccountDto::fromEntity).collect(Collectors.toList());
+    }
 }
