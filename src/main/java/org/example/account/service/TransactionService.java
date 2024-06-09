@@ -127,4 +127,11 @@ private final AccountRepository accountRepository;
 
         saveAndGetTransaction(CANCEL, F, amount, account);
     }
+
+    public TransactionDto queryTransaction(String transactionId) {
+        return TransactionDto.fromEntity(
+                transactionRepository.findByTransactionId(transactionId)
+                        .orElseThrow(() -> new AccountException(ErrorCode.TRANSACTION_NOT_FOUND))
+        );
+    }
 }
