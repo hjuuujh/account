@@ -64,7 +64,10 @@ public class AccountService {
 
     @Transactional
     public Account getAccount(Long id) {
-        return accountRepository.findById(id).orElse(null);
+        if (id < 0) {
+            throw new RuntimeException("Minus");
+        }
+        return accountRepository.findById(id).get();
     }
 
     @Transactional

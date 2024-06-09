@@ -4,6 +4,8 @@ import lombok.*;
 
 import javax.validation.constraints.*;
 import java.time.LocalDateTime;
+
+import org.example.account.aop.AccountLockIdInterface;
 import org.example.account.type.TransactionResultType;
 
 public class UseBalance {
@@ -17,7 +19,7 @@ public class UseBalance {
     @Getter
     @Setter
     @AllArgsConstructor
-    public static class Request{
+    public static class Request implements AccountLockIdInterface {
         @NotNull
         @Min(1)
         private Long userId;

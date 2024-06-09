@@ -8,7 +8,6 @@ import org.example.account.dto.CreateAccount;
 import org.example.account.dto.DeleteAccount;
 import org.example.account.repository.AccountRepository;
 import org.example.account.service.AccountService;
-import org.example.account.service.RedisTestService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,7 +19,6 @@ import java.util.stream.Collectors;
 public class AccountController {
     // 외부에서 컨트롤러로 접속 -> 컨트롤러는 서비스로 -> 서비스는 레포지토리로 접속 : layer 구조
     private final AccountService accountService;
-    private final RedisTestService redisTestService;
 
     @PostMapping("/account")
     public CreateAccount.Response createAccount(@RequestBody @Valid CreateAccount.Request request) {
@@ -43,8 +41,9 @@ public class AccountController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/get-lock")
-    public String getLock() {
-        return redisTestService.getLock();
+    @GetMapping("/account/{id}")
+    public Account getAccount(
+            @PathVariable Long id) {
+        return accountService.getAccount(id);
     }
 }
